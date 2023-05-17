@@ -1,6 +1,7 @@
 const dbData = require('./db/db.json')
 const express = require('express');
 const fs = require('fs')
+const { v4: uuidv4 } = require('uuid');
 
 const path = require('path');
 
@@ -23,10 +24,19 @@ app.post('/api/notes', (req, res) => {
     * Request Body:
     * [{title: 'test title', text: 'text 1'}, {title: 'test title2', text: 'text 2'}]
     */
-   const newNotes = req.body
 
    //TODO: create uuid identifiers
-   newData = JSON.stringify([...dbData, ...newNotes], null, 4)
+   const notesWithUuids = req.body?.map(current => {
+      /**
+       * Input: {title: 'test title', text: 'text 1'}
+       * Output: {title: 'test title', text: 'text 1', uuid: '333-444-rr-44-4-4'}
+       */
+      current.uuid = uuidv4()
+      return current
+   })
+
+
+   newData = JSON.stringify([...dbData, ...notesWithUuids], null, 4)
 
    fs.writeFile(`./db/db.json`, newData, (err) =>
       err

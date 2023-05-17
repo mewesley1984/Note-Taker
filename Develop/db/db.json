@@ -10,5 +10,10 @@
     {
         "title": "party time",
         "text": "gets some beers"
+    },
+    {
+        "title": "party time",
+        "text": "gets some beers",
+        "uuid": "aa1e0def-3d75-43b6-b47b-70e54ddad160"
     }
 ]
