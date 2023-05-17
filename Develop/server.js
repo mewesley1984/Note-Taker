@@ -1,9 +1,10 @@
-const dbData = require('./db/db.json')
 const express = require('express');
 const fs = require('fs')
 const { v4: uuidv4 } = require('uuid');
 
 const path = require('path');
+
+const readDatabase = () => JSON.parse(fs.readFileSync('./db/db.json'))
 
 const app = express();
 
@@ -17,7 +18,10 @@ app.use(express.json());
 app.get('/notes', (req, res) => 
 res.sendFile(path.join(__dirname, 'public/notes.html')));
 
-app.get('/api/notes', (req, res) => res.json(dbData));
+app.get('/api/notes', (req, res) => {
+   const dbData = readDatabase()
+   res.json(dbData)
+});
 
 app.post('/api/notes', (req, res) => {
    /**
@@ -25,7 +29,6 @@ app.post('/api/notes', (req, res) => {
     * [{title: 'test title', text: 'text 1'}, {title: 'test title2', text: 'text 2'}]
     */
 
-   //TODO: create uuid identifiers
    const notesWithUuids = req.body?.map(current => {
       /**
        * Input: {title: 'test title', text: 'text 1'}
@@ -36,7 +39,7 @@ app.post('/api/notes', (req, res) => {
    })
 
 
-   newData = JSON.stringify([...dbData, ...notesWithUuids], null, 4)
+   newData = JSON.stringify([...readDatabase(), ...notesWithUuids], null, 4)
 
    fs.writeFile(`./db/db.json`, newData, (err) =>
       err
