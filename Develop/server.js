@@ -23,6 +23,21 @@ app.get('/api/notes', (req, res) => {
    res.json(dbData)
 });
 
+// Usage: DELETE /api/notes/444-frd-556-sdff-445
+app.delete('/api/notes/:uuid', (req, res) => {
+   const allNotes = readDatabase()
+   const allOtherNotes = JSON.stringify(allNotes.filter(item=>item.uuid !== req.params.uuid), null, 4)
+
+   fs.writeFile(`./db/db.json`, allOtherNotes, (err) =>
+   err
+     ? console.error(err)
+     : console.log(
+         `Wrote db.json file successfully. (deleted note)`
+       )
+ );
+   res.json(note)
+})
+
 app.post('/api/notes', (req, res) => {
    /**
     * Request Body:
