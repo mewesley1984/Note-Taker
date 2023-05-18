@@ -35,7 +35,7 @@ app.delete('/api/notes/:uuid', (req, res) => {
          `Wrote db.json file successfully. (deleted note)`
        )
  );
-   res.status(204) // http 204 = deleted
+   res.sendStatus(204) // http 204 = deleted
 })
 
 app.post('/api/notes', (req, res) => {
